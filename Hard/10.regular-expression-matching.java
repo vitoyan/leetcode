@@ -34,38 +34,38 @@ public class Solution {
     public boolean isMatch(String s, String p) {
         if(s == null || p == null)
             return false;
-        int sLength = s.length();
         boolean[][] m = new boolean[s.length() + 1][p.length() + 1];
-
         m[0][0] = true;
-        for(int i = 1 ; i < s.length(); i++)
+        for(int i = 1; i < p.length() + 1; i++)
         {
-            if(p[i - 1] == '*')
+            if(p.charAt(i - 1) == '*')
             {
-               if(m[0][i-1] || (j > 2 && m[0][i-2])
-                       m[0][i] = true;
+                if(m[0][i - 1] || (i > 1 && m[0][i - 2]))
+                    m[0][i] = true;
             }
         }
-
-        for(int i = 1; i < s.length(); i++)
-            for(int j = 1; i < s[0].length(); j++)
+        
+        for(int i = 1; i < s.length() + 1; i++)
+            for(int j = 1; j < p.length() + 1; j++)
             {
-                if(p.charAt(j - 1) == s.charAt(i -1))
+                if(s.charAt(i - 1) == p.charAt(j - 1))
                     m[i][j] = m[i - 1][j - 1];
-                if(p.charAt(j - 1) == '.')
-                    m[i][j] = m[i-1][j-1];
-                if(p.charAt(j - 1) = '*')
+                if(p.charAt(j -1) == '.' )
+                    m[i][j] = m[i - 1][j - 1];
+                if(p.charAt(j - 1) == '*')
                 {
-                    if(p.charAt(j - 2) != s.charAt(i-1) &&  p.charAt(j - 2) != '.')
+                    if(s.charAt(i - 1) != p.charAt(j - 2) && p.charAt(j - 2) != '.')
                     {
-                        m[i][j] = m[i][j - 1];
+                        m[i][j] = m[i][j - 2];
+                        
                     }
                     else
                     {
-                        m[i][j] = m[i - 1][j] | m[i][j - 1] | m[i][j - 2];
+                        m[i][j] = (m[i][j - 2] | m[i][j - 1] |  m[i - 1][j - 1] | m[i - 1][j]);
                     }
                 }
             }
-         return m[s.length()][p.length()]
+        
+        return m[s.length()][p.length()];        
     }
 }
